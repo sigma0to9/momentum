@@ -19,10 +19,12 @@ function handleSubmit(event){
 function askForName() {
     form.classList.add(SHOWING_CN);
     form.addEventListener("submit", handleSubmit);
+    //이벤트리스너를 붙여 제출하는 이벤트를 사용할건데, 이벤트를 살짝 수정하는 함수 추가
 }
 
 function paintGreeting(text){
-    form.classList.remove(SHOWING_CN);
+    form.classList.remove(SHOWING_CN); 
+    // form 클래스들의 리스트에 showing(block으로 css에 정의)을 넣은것을 삭제
     greeting.classList.add(SHOWING_CN);
     greeting.innerText = `hello ${text}`
 }
