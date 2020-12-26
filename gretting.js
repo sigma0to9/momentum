@@ -1,47 +1,63 @@
-const form = document.querySelector(".js-form"), //css와 선택자가 같음, css처럼 클래스와 태그 등을 js에서 끌어다 사용할 수 있음.
-    input = form.querySelector("input"),
-    greeting = document.querySelector(".js-greetings");
+/*
+순서
+0. init();
+1. 이름을 불러온다.
+2. 이름이 있는경우 
+    2-1. 환영해준다.
+3. 이름이 없는경우 
+    3-1. 박스를 보여주고 이벤트 리스너를 사용하여 엔터를 쳤을 때 다음 함수를 실행한다.
+    3-2. 인풋의 속성을 받아 환영함수로 넘긴다.
+    3-3. 인풋의 속성을 받아 저장하는 함수로 넘긴다.
 
-const USER_LS = "currentUser",
-    SHOWING_CN = "showing";
+주의할점
+1. 애러가 나면 콘솔을 따라 상위단계로 천천히 따라간다.
+2. querySelector 는 클래스/태그 가 속한 태그를 들고온다. 태그 이외의 클래스는 들고오지 않는다.
+3. classlist.add remove 는 태그에 클래스를 추가하거나 빼는 역할을 한다.
+4. 사용법 숙지 : .preventDefault , addEventListener, localstorage.setItem ,getItem 
+*/
+
+const form = document.querySelector(".js-form"),
+    input = form.querySelector("input"),
+    grettings = document.querySelector(".js-grettings");
+
 
 function saveName(text){
-    localStorage.setItem(USER_LS, text);
+    localStorage.setItem("currentUser", text); // setItem 사용법
 }
 
-function handleSubmit(event){
-    event.preventDefault();
-    const currentValue = input.value;
-    paintGreeting(currentValue);
-    saveName(currentValue);
+function grettingHim(text){
+    form.classList.remove("showing"); // classList 사용법
+    grettings.classList.add("showing");
+    grettings.innerText = `hello ${text}`;  // ineerText 사용법 : 속성을 직접 추가 가능
 }
 
-function askForName() {
-    form.classList.add(SHOWING_CN);
-    form.addEventListener("submit", handleSubmit);
-    //이벤트리스너를 붙여 제출하는 이벤트를 사용할건데, 이벤트를 살짝 수정하는 함수 추가
+function receiveName(event){
+    event.preventDefault(); //preventDefault 사용법
+    const currentName = input.value; // 태그의 속성을 js에서 직접 부를 수 있다.
+    grettingHim(currentName);
+    saveName(currentName);
 }
 
-function paintGreeting(text){
-    form.classList.remove(SHOWING_CN); 
-    // form 클래스들의 리스트에 showing(block으로 css에 정의)을 넣은것을 삭제
-    greeting.classList.add(SHOWING_CN);
-    greeting.innerText = `hello ${text}`
+function showBox(){
+    form.classList.add("showing");
+    form.addEventListener("submit", receiveName); 
+    // 이벤트리스너를 통해 value를 "제출" 가능하고, 이벤트를 받을 때 함수를 정의할 수 있다.
 }
 
-function loadName() {
-    const currentUser = localStorage.getItem(USER_LS);
-    if(currentUser === null ){
-        // she in not
-        askForName();
-    } else {
-        // she is
-        paintGreeting(currentUser);
+
+function chooseState(){
+    const currentUser = localStorage.getItem("currentUser");
+    if( currentUser === null ){
+        showBox();
+    }else{
+        grettingHim(currentUser);
     }
 }
 
-function init() {
-    loadName();
+function init(){  // 처음 시작은 항상 init() 함수로 시작한다.
+    chooseState(); 
+    // 첫 화면을 시작할때 경우의 수를 무엇을 기준으로 삼을지 고민하기. 여기선 로드네임으로 해도됨 : 
+    // 이름을 어떻게 불러오는 지가 중요하고 -> 이름이 없는 경우는 표시해주면 되니까.
 }
 
 init();
