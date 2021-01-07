@@ -12,7 +12,7 @@
 주의할점
 1. 애러가 나면 콘솔을 따라 상위단계로 천천히 따라간다.
 2. querySelector 는 클래스/태그 가 속한 태그를 들고온다. 태그 이외의 클래스는 들고오지 않는다.
-3. classlist.add remove 는 태그에 클래스를 추가하거나 빼는 역할을 한다.
+3. classlist.add remove 는 태그에 클래스를 추가하거나 빼는 역할을 한다.(기본적으로 태그에 클래스가 하나도 없는 상태)
 4. 사용법 숙지 : .preventDefault , addEventListener, localstorage.setItem ,getItem 
 */
 
